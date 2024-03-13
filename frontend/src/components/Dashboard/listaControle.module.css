@@ -1,0 +1,24 @@
+.tableCafe {
+  margin-top: 2rem;
+}
+
+.cardsContainer {
+  display: flex;
+  gap: 3rem;
+}
+
+.list,
+.listLi {
+  display: flex;
+  padding: 10px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  text-align: justify;
+}
+
+@media screen and (max-width: 767px) {
+  .cardsContainer {
+    flex-direction: column;
+    gap: 0;
+  }
+}

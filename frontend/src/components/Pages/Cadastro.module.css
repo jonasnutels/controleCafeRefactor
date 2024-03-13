@@ -1,0 +1,43 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 95vh;
+}
+
+.title {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 2rem;
+}
+
+.title h1 {
+  text-align: center;
+}
+
+.astroLogo {
+  width: 100px;
+}
+.container {
+  width: 500px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+.boxForm {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+@media screen and (max-width: 767px) {
+  .container {
+    max-width: 300px;
+  }
+  .title {
+    gap: 1rem;
+  }
+}

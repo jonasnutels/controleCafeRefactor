@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredericka+the+Great&family=Merriweather:ital@1&family=Montserrat:wght@400;500&family=Pacifico&family=Poppins&display=swap');
+:root {
+  background-color: rgb(226 232 240);
+}
+* {
+  font-family: 'Poppins', sans-serif;
+}
+ul li {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  background-color: transparent;
+}
+
+body {
+  margin: 0 auto;
+}
+.content {
+  height: auto;
+  min-height: 85.5vh;
+}
+
+@media screen and (max-width: 767px) {
+  .content {
+    min-height: 100vh;
+    margin-bottom: 2rem;
+  }
+}

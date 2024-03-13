@@ -1,0 +1,10 @@
+.footerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nomeDev {
+  font-weight: 600;
+  text-decoration: underline;
+}

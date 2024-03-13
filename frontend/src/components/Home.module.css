@@ -1,0 +1,74 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 95vh;
+}
+
+.title {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 2rem;
+}
+
+.title h1 {
+  text-align: center;
+}
+
+.astroLogo {
+  width: 100px;
+}
+.container {
+  width: 500px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+.boxForm {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.cadastrarse {
+  position: relative;
+  border-radius: 4px;
+  padding: 3px;
+  width: 120px;
+  overflow: hidden;
+}
+
+.cadastrarse::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background-color: #1976d2;
+  opacity: 0;
+  transition: width 0.5s ease, opacity 0.5s ease;
+  z-index: -1; /* Coloca o pseudo-elemento abaixo do conteúdo principal */
+}
+
+.cadastrarse:hover::before {
+  width: 100%;
+  opacity: 1;
+}
+
+.cadastrarse:hover {
+  color: white;
+}
+
+@media screen and (max-width: 767px) {
+  .container {
+    max-width: 300px;
+  }
+  .title {
+    gap: 1rem;
+  }
+}
