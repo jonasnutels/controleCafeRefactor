@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 
 const getUsuarios = (req, res) => {
-  db.query('SELECT * FROM crud.usuarios', (err, result) => {
+  db.query('SELECT * FROM usuarios', (err, result) => {
     if (err) {
       console.error(err);
       res.status(500).json({ error: 'Erro ao buscar usuários' });
@@ -21,7 +21,7 @@ const criarUsuario = (req, res) => {
 
   // Verificar se o usuário ou o email já existem na tabela
   db.query(
-    'SELECT * FROM crud.usuarios WHERE usuario = $1 OR email = $2',
+    'SELECT * FROM usuarios WHERE usuario = $1 OR email = $2',
     [usuario, email],
     (err, result) => {
       if (err) {
@@ -38,7 +38,7 @@ const criarUsuario = (req, res) => {
 
       // Usuário e email não existem, criar novo cadastro
       const insertQuery =
-        'INSERT INTO crud.usuarios (nome, email, usuario, senha_hash) VALUES ($1, $2, $3, $4)';
+        'INSERT INTO usuarios (nome, email, usuario, senha_hash) VALUES ($1, $2, $3, $4)';
 
       db.query(insertQuery, [nome, email, usuario, senhaHash], (insertErr) => {
         if (insertErr) {
@@ -56,7 +56,7 @@ const editarUsuario = (req, res) => {
 
   // Verificar se o usuário existe na tabela
   db.query(
-    'SELECT * FROM crud.usuarios WHERE id_serial = $1',
+    'SELECT * FROM usuarios WHERE id_serial = $1',
     [id],
     (err, result) => {
       if (err) {
@@ -73,7 +73,7 @@ const editarUsuario = (req, res) => {
 
       // Usuário encontrado, realizar a edição
       const updateQuery =
-        'UPDATE crud.usuarios SET nome = $1, email = $2, usuario = $3, senha_hash = $4 WHERE id_serial = $5';
+        'UPDATE usuarios SET nome = $1, email = $2, usuario = $3, senha_hash = $4 WHERE id_serial = $5';
 
       // Se uma nova senha foi fornecida, hash a nova senha
       const senhaHash = senha
@@ -101,7 +101,7 @@ const excluirUsuario = (req, res) => {
 
   // Verificar se o usuário existe na tabela
   db.query(
-    'SELECT * FROM crud.usuarios WHERE id_serial = $1',
+    'SELECT * FROM usuarios WHERE id_serial = $1',
     [id],
     (err, result) => {
       if (err) {
@@ -117,7 +117,7 @@ const excluirUsuario = (req, res) => {
       }
 
       // Usuário encontrado, realizar a exclusão
-      const deleteQuery = 'DELETE FROM crud.usuarios WHERE id_serial = $1';
+      const deleteQuery = 'DELETE FROM usuarios WHERE id_serial = $1';
 
       db.query(deleteQuery, [id], (deleteErr) => {
         if (deleteErr) {
@@ -135,7 +135,7 @@ const autenticar = (req, res) => {
 
   // Buscar usuário no banco de dados
   db.query(
-    'SELECT * FROM crud.usuarios WHERE usuario = $1',
+    'SELECT * FROM usuarios WHERE usuario = $1',
     [usuario],
     (err, result) => {
       if (err) {
@@ -155,7 +155,20 @@ const autenticar = (req, res) => {
             'secreto',
             { expiresIn: '30m' },
           );
-          res.json({ token, usuarioEncontrado });
+
+          // Inserir registro na tabela sessoes
+          db.query(
+            "INSERT INTO sessoes (token, usuario, data_expiracao, data_login) VALUES ($1, $2, NOW() + INTERVAL '30 minutes', NOW())",
+            [token, usuario],
+            (insertErr) => {
+              if (insertErr) {
+                console.error(insertErr);
+                res.status(500).json({ error: 'Erro ao inserir sessão' });
+              } else {
+                res.json({ token, usuarioEncontrado });
+              }
+            },
+          );
         } else {
           res.status(401).json({ error: 'Credenciais inválidas' });
         }
