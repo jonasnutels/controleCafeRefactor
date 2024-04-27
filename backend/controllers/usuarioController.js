@@ -176,6 +176,23 @@ const autenticar = (req, res) => {
     },
   );
 };
+const validarToken = (req, res) => {
+  const { token } = req.body;
+
+  if (!token) {
+    return res.status(400).json({ error: 'Token não fornecido' });
+  }
+
+  try {
+    // Verificar se o token é válido
+    const decoded = jwt.verify(token, 'secreto');
+    return res.json({ usuario: decoded.usuario }); // Retorna o usuário contido no token se for válido
+  } catch (error) {
+    // Se houver algum erro na validação do token
+    console.error(error);
+    return res.status(401).json({ error: 'Token inválido' });
+  }
+};
 
 // Função para verificar a senha
 const verificaSenha = (senha, senhaHash) => {
@@ -189,4 +206,5 @@ module.exports = {
   autenticar,
   editarUsuario,
   excluirUsuario,
+  validarToken,
 };

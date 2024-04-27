@@ -32,6 +32,7 @@ app.post('/usuarios', usuarioController.criarUsuario);
 app.put('/usuarios', usuarioController.editarUsuario);
 app.delete('/usuarios/:id', usuarioController.excluirUsuario);
 app.post('/autenticar', usuarioController.autenticar);
+app.post('/validartoken', usuarioController.validarToken);
 
 //Rotas Lista de Compras
 app.get('/lista', listaController.getLista);
