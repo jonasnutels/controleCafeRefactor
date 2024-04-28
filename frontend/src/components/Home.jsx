@@ -10,15 +10,29 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { toast } from 'sonner';
 import CoffeeIcon from '@mui/icons-material/Coffee';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import 'animate.css';
 
 function Home() {
-  const { handleLogin } = useContext(UserContext);
-
+  const { handleLogin, handleValidarToken, autenticado } =
+    useContext(UserContext);
   const [showPassword, setShowPassword] = useState(false);
-  const [usuario, setUsuario] = useState('senhas');
+  const [usuario, setUsuario] = useState('senha');
   const [senha, setSenha] = useState('senha');
+  const [loading, setLoading] = useState('senha');
+  const access_token = window.localStorage.getItem('token');
+  useEffect(() => {
+    if (access_token) {
+      handleValidarToken(access_token)
+        .then(() => setLoading(false))
+        .catch(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, [access_token]);
+
+  console.log(autenticado);
+  if (autenticado) return <Navigate to={'lista'} />;
   async function handleSubmit(event) {
     event.preventDefault();
     handleLogin(usuario, senha);

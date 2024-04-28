@@ -1,7 +1,11 @@
 import React, { useState, createContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { AUTENTICAR_POST, LISTA_COMPRAS_GET } from './service/api';
+import {
+  AUTENTICAR_POST,
+  LISTA_COMPRAS_GET,
+  VALIDAR_TOKEN_POST,
+} from './service/api';
 
 export const UserContext = createContext();
 
@@ -40,6 +44,25 @@ export const UserStorage = ({ children }) => {
       setLoading(false);
     }
   }
+  async function handleValidarToken(token) {
+    try {
+      const { url, options } = VALIDAR_TOKEN_POST({ token });
+
+      const autenticando = await fetch(url, options);
+      const dados = await autenticando.json();
+      if (!autenticando.ok) {
+        toast.error('Você precisa logar novamente...');
+      } else {
+        setUsuario(dados);
+        setAutenticado(true);
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   async function handleLogout() {
     toast.warning('Saindo... ');
     setTimeout(() => {
@@ -83,6 +106,7 @@ export const UserStorage = ({ children }) => {
         error,
         getLista,
         lista,
+        handleValidarToken,
       }}
     >
       {children}

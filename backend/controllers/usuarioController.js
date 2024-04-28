@@ -143,7 +143,6 @@ const autenticar = (req, res) => {
         res.status(500).json({ error: 'Erro ao buscar usuário' });
       } else {
         const usuarioEncontrado = result.rows[0];
-
         // Verificar se o usuário existe e a senha está correta
         if (
           usuarioEncontrado &&
@@ -151,7 +150,10 @@ const autenticar = (req, res) => {
         ) {
           // Gerar token JWT
           const token = jwt.sign(
-            { usuario: usuarioEncontrado.usuario },
+            {
+              usuario: usuarioEncontrado.usuario,
+              email: usuarioEncontrado.email,
+            },
             'secreto',
             { expiresIn: '30m' },
           );
@@ -186,11 +188,11 @@ const validarToken = (req, res) => {
   try {
     // Verificar se o token é válido
     const decoded = jwt.verify(token, 'secreto');
-    return res.json({ usuario: decoded.usuario }); // Retorna o usuário contido no token se for válido
+    return res.json({ usuario: decoded.usuario, email: decoded.email }); // Retorna o usuário contido no token se for válido
   } catch (error) {
     // Se houver algum erro na validação do token
     console.error(error);
-    return res.status(401).json({ error: 'Token inválido' });
+    return res.status(401).json({ error: error });
   }
 };
 

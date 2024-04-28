@@ -18,12 +18,6 @@ import { formatDistanceToNow } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 const columns = [
-  // {
-  //   field: 'id',
-  //   headerName: 'ID',
-  //   width: 70,
-  //   headerClassName: 'super-app-theme--header',
-  // },
   { field: 'nome_comprador', headerName: 'Nome', width: 250 },
 
   { field: 'tipo_cafe', headerName: 'Tipo do Café', width: 150 },
@@ -151,14 +145,12 @@ export default function ListaControle() {
               Pessoas que não constam no sistema
             </Typography>
             <Typography variant="h7" gutterBottom color={'red'}>
-              <ul className={styles.list}>
-                {listaOrdem.map((item) => (
-                  <li key={item.id} className={styles.listLi}>
-                    {item.nome}
-                    <RemoveShoppingCartIcon />
-                  </li>
-                ))}
-              </ul>
+              {listaOrdem.map((item, index) => (
+                <li key={index} className={styles.listLi}>
+                  {item.nome}
+                  <RemoveShoppingCartIcon />
+                </li>
+              ))}
             </Typography>
           </CardContent>
         </Card>
