@@ -1,11 +1,17 @@
 const { Pool } = require('pg');
+require('dotenv/config');
 
+const host = process.env.HOST_DB;
+const user = process.env.USER_DB;
+const database = process.env.DATABASE_DB;
+const password = process.env.PASS_DB;
+const port = process.env.PORT_DB;
 const pool = new Pool({
-  host: 'aws-0-sa-east-1.pooler.supabase.com',
-  database: 'postgres',
-  user: 'postgres.zynjcdzmoiwhudjghpsx',
-  password: 'OsRKVP3PN2QoWNMA',
-  port: 5432,
+  host: host,
+  database: database,
+  user: user,
+  password: password,
+  port: port,
 });
 
 module.exports = {
