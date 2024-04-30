@@ -18,7 +18,16 @@ import { formatDistanceToNow } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 const columns = [
-  { field: 'nome_comprador', headerName: 'Nome', width: 250 },
+  { field: 'nome_comprador', headerName: 'Nome', width: 300 },
+  {
+    field: 'data_compra',
+    headerName: 'Data da Compra',
+    width: 162,
+    renderCell: (params) => {
+      const dataFormatada = format(new Date(params.value), 'dd/MM/yyyy');
+      return <span>{dataFormatada}</span>;
+    },
+  },
 
   { field: 'tipo_cafe', headerName: 'Tipo do Café', width: 150 },
   { field: 'valor_total', headerName: 'Valor Total', width: 100 },
@@ -39,19 +48,11 @@ const columns = [
       return <span>{dataFormatada}</span>;
     },
   },
-  {
-    field: 'data_compra',
-    headerName: 'Data da Compra',
-    width: 162,
-    renderCell: (params) => {
-      const dataFormatada = format(new Date(params.value), 'dd/MM/yyyy');
-      return <span>{dataFormatada}</span>;
-    },
-  },
+
   {
     field: 'email_registros',
     headerName: 'Quem Registrou',
-    width: 200,
+    width: 220,
     renderCell: (params) => {
       // Separando o e-mail pelo caractere '@' e pegando a parte antes do '@'
       const emailUsuario = params.value.split('@')[0];
@@ -61,12 +62,11 @@ const columns = [
 ];
 export default function ListaControle() {
   // const [lista, setLista] = React.useState(['item 1']);
-  const [listaOrdem, setlistaOrdem] = React.useState([{ nome: 'asd' }]);
-  const { getLista, lista } = React.useContext(UserContext);
+  const { getLista, lista, getFila, fila } = React.useContext(UserContext);
   React.useEffect(() => {
     getLista();
+    getFila();
   }, []);
-
   const compraMaisRecente =
     lista.length > 0
       ? [...lista].sort(
@@ -144,11 +144,18 @@ export default function ListaControle() {
             <Typography variant="h6" gutterBottom fontWeight={600}>
               Pessoas que não constam no sistema
             </Typography>
-            <Typography variant="h7" gutterBottom color={'red'}>
-              {listaOrdem.map((item, index) => (
-                <li key={index} className={styles.listLi}>
-                  {item.nome}
-                  <RemoveShoppingCartIcon />
+            <Typography variant="h7" gutterBottom>
+              {fila.map((item, index) => (
+                <li
+                  key={index}
+                  className={styles.listLi}
+                  style={{
+                    color: index === 0 ? 'red' : index === 1 ? '#FF6400' : null,
+                  }}
+                >
+                  {index + 1} - {item.nome} -{' '}
+                  {format(new Date(item.data_compra), 'dd/MM/yyyy')}
+                  {index === 0 && <RemoveShoppingCartIcon />}
                 </li>
               ))}
             </Typography>
@@ -165,10 +172,10 @@ export default function ListaControle() {
           columns={columns}
           initialState={{
             pagination: {
-              paginationModel: { page: 0, pageSize: 10 },
+              paginationModel: { page: 0, pageSize: 100 },
             },
           }}
-          pageSizeOptions={[5, 10, 20]}
+          pageSizeOptions={[5, 10, 20, 100]}
           slots={{
             toolbar: CustomToolbar,
           }}

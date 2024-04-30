@@ -151,6 +151,8 @@ const autenticar = (req, res) => {
           // Gerar token JWT
           const token = jwt.sign(
             {
+              id_serial: usuarioEncontrado.id_serial,
+              nome: usuarioEncontrado.nome,
               usuario: usuarioEncontrado.usuario,
               email: usuarioEncontrado.email,
             },
@@ -188,7 +190,12 @@ const validarToken = (req, res) => {
   try {
     // Verificar se o token é válido
     const decoded = jwt.verify(token, 'secreto');
-    return res.json({ usuario: decoded.usuario, email: decoded.email }); // Retorna o usuário contido no token se for válido
+    return res.json({
+      id_serial: decoded.id_serial,
+      nome: decoded.nome,
+      usuario: decoded.usuario,
+      email: decoded.email,
+    }); // Retorna o usuário contido no token se for válido
   } catch (error) {
     // Se houver algum erro na validação do token
     console.error(error);

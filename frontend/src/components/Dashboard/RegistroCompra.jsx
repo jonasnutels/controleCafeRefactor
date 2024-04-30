@@ -9,17 +9,18 @@ import {
 import { UserContext } from '../../userContext';
 
 const RegistroCompra = () => {
-  const { handleRegistrarCompra, usuario } = useContext(UserContext);
+  const { registrarCompra, usuario, atualizarFila } = useContext(UserContext);
+  console.log(usuario);
   const [dadosCompra, setDadosCompra] = useState({
     nomeComprador: '',
     dataDaCompra: '',
     tipoCafe: '',
     quantidadeKg: '',
     fornecedor: '',
-    valorTotal: '',
+    valorTotal: 0,
     metodoPagamento: '',
     observacoes: '',
-    email_registros: usuario.email,
+    email_registros: usuario.usuario,
   });
   const tiposCafe = ['Arábica', 'Robusta', 'Blend'];
   const metodosPagamento = ['Dinheiro', 'Cartão', 'Transferência'];
@@ -27,10 +28,10 @@ const RegistroCompra = () => {
   const handleChange = (e) => {
     setDadosCompra({ ...dadosCompra, [e.target.name]: e.target.value });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await handleRegistrarCompra(dadosCompra);
+    await registrarCompra(dadosCompra);
+    await atualizarFila(usuario.id_serial, dadosCompra.dataDaCompra);
   };
 
   return (
@@ -140,7 +141,7 @@ const RegistroCompra = () => {
         <TextField
           fullWidth
           name="email_registros"
-          value={usuario.email}
+          value={usuario.usuario}
           onChange={handleChange}
           margin="normal"
           disabled
