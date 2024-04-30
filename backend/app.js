@@ -6,6 +6,8 @@ const basicAuth = require('basic-auth');
 const app = express();
 const port = 3000;
 const cors = require('cors');
+const { specs, swaggerUi } = require('./swaggerConfig'); // Importe o módulo swaggerConfig
+
 app.use(cors());
 const basicAuthMiddleware = (req, res, next) => {
   const user = basicAuth(req);
@@ -36,6 +38,9 @@ app.post('/validartoken', usuarioController.validarToken);
 
 //Rotas Lista de Compras
 app.get('/lista', listaController.getLista);
+
+// Adicione o Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
