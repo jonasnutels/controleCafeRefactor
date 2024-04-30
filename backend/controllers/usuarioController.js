@@ -1,3 +1,161 @@
+/**
+ * @swagger
+ * /usuarios:
+ *   get:
+ *     summary: Retorna todos os usuários.
+ *     description: Retorna todos os usuários cadastrados no sistema.
+ *     responses:
+ *       200:
+ *         description: Sucesso. Retorna a lista de usuários.
+ *       500:
+ *         description: Erro ao buscar usuários.
+ */
+
+/**
+ * @swagger
+ * /usuarios:
+ *   post:
+ *     summary: Cria um novo usuário.
+ *     description: Cria um novo usuário com as informações fornecidas.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nome:
+ *                 type: string
+ *                 description: Nome do usuário.
+ *               email:
+ *                 type: string
+ *                 description: Email do usuário.
+ *               usuario:
+ *                 type: string
+ *                 description: Nome de usuário (login).
+ *               senha:
+ *                 type: string
+ *                 description: Senha do usuário.
+ *     responses:
+ *       200:
+ *         description: Sucesso. Usuário criado com sucesso.
+ *       400:
+ *         description: Usuário ou email já existe.
+ *       500:
+ *         description: Erro ao criar usuário.
+ */
+
+/**
+ * @swagger
+ * /usuarios:
+ *   put:
+ *     summary: Edita um usuário existente.
+ *     description: Edita as informações de um usuário existente com base no ID.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: integer
+ *                 description: ID do usuário a ser editado.
+ *               nome:
+ *                 type: string
+ *                 description: Novo nome do usuário.
+ *               email:
+ *                 type: string
+ *                 description: Novo email do usuário.
+ *               usuario:
+ *                 type: string
+ *                 description: Novo nome de usuário (login).
+ *               senha:
+ *                 type: string
+ *                 description: Nova senha do usuário (opcional).
+ *     responses:
+ *       200:
+ *         description: Sucesso. Usuário editado com sucesso.
+ *       404:
+ *         description: Usuário não encontrado.
+ *       500:
+ *         description: Erro ao editar usuário.
+ */
+
+/**
+ * @swagger
+ * /usuarios/{id}:
+ *   delete:
+ *     summary: Exclui um usuário.
+ *     description: Exclui um usuário com base no ID fornecido.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID do usuário a ser excluído.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Sucesso. Usuário excluído com sucesso.
+ *       404:
+ *         description: Usuário não encontrado.
+ *       500:
+ *         description: Erro ao excluir usuário.
+ */
+
+/**
+ * @swagger
+ * /autenticar:
+ *   post:
+ *     summary: Autentica um usuário.
+ *     description: Autentica um usuário com as credenciais fornecidas e retorna um token JWT.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               usuario:
+ *                 type: string
+ *                 description: Nome de usuário (login).
+ *               senha:
+ *                 type: string
+ *                 description: Senha do usuário.
+ *     responses:
+ *       200:
+ *         description: Sucesso. Retorna o token JWT e as informações do usuário.
+ *       401:
+ *         description: Credenciais inválidas.
+ *       500:
+ *         description: Erro ao buscar usuário ou inserir sessão.
+ */
+
+/**
+ * @swagger
+ * /validartoken:
+ *   post:
+ *     summary: Valida um token JWT.
+ *     description: Valida um token JWT fornecido e retorna as informações do usuário.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               token:
+ *                 type: string
+ *                 description: Token JWT a ser validado.
+ *     responses:
+ *       200:
+ *         description: Sucesso. Retorna as informações do usuário contidas no token.
+ *       400:
+ *         description: Token não fornecido.
+ *       401:
+ *         description: Token inválido.
+ */
 const db = require('../db');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');

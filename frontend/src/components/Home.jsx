@@ -33,6 +33,7 @@ function Home() {
 
   console.log(autenticado);
   if (autenticado) return <Navigate to={'lista'} />;
+
   async function handleSubmit(event) {
     event.preventDefault();
     handleLogin(usuario, senha);

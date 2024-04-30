@@ -1,3 +1,16 @@
+/**
+ * @swagger
+ * /lista:
+ *   get:
+ *     summary: Retorna a lista de compras.
+ *     description: Retorna todos os itens da lista de compras.
+ *     responses:
+ *       200:
+ *         description: Sucesso. Retorna a lista de compras.
+ *       500:
+ *         description: Erro ao buscar a lista de compras.
+ */
+
 const db = require('../db');
 
 const getLista = (req, res) => {
